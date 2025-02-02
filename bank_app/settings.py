@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-a436dqv7i)oxrzw_md9c3pf%l7vlqnha5$&(*d44j6l0ttgw=o
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['onestopbank.pythonanywhere.com']
 
 
 # Application definition
