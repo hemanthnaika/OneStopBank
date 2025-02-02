@@ -10,6 +10,15 @@
 </head>
 
 <body class="bg-gray-50">
+    {% if messages %}
+    <div id="msg-box" class="fixed top-4 right-4 z-50 space-y-2">
+        {% for message in messages %}
+        <div class="message px-4 py-3 rounded-lg shadow-lg {{ message.tags }}">
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
     <!-- Login Page -->
     <div class="min-h-screen bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 flex items-center justify-center p-4">
         <div class="w-full max-w-md bg-white p-8 rounded-lg shadow-lg">
@@ -19,13 +28,7 @@
             </div>
 
             <form action="{% url 'login' %}" method="POST" class="space-y-4 font-text">
-                {% if messages %}
-                <ul>
-                    {% for message in messages %}
-                    <li class="bg-red-500 text-center text-white rounded-md p-2">{{ message }}</li>
-                    {% endfor %}
-                </ul>
-                {% endif %} {% csrf_token %}
+                {% csrf_token %}
                 <!-- Email Field -->
                 <div>
                     <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
@@ -65,7 +68,17 @@
 
 
     </div>
-
+    <script>
+        // Auto-hide messages after 3 seconds
+        setTimeout(() => {
+            let messages = document.querySelectorAll('.message');
+            messages.forEach((msg) => {
+                msg.style.transition = "opacity 0.5s";
+                msg.style.opacity = "0";
+                setTimeout(() => msg.remove(), 500); // Remove after fade-out
+            });
+        }, 3000); // Time in milliseconds
+    </script>
 </body>
 
 </html>
