@@ -1,0 +1,53 @@
+<!DOCTYPE html> {% extends 'master_page.html' %} {% load static %} {% block title %}OneStop Bank| Deposit Money {% endblock %}{% block content %}
+
+
+<div class="bg-gray-100 min-h-screen flex items-center justify-center">
+    <div class="w-full max-w-md bg-white p-6 rounded-lg shadow-lg">
+        <h2 class="font-heading text-2xl font-bold text-gray-800 text-center mb-6">Deposit Money</h2>
+        <p class="text-gray-600 mb-4">Current Balance: <strong>₹{{ balance }}</strong></p>
+
+
+        <form method="POST">
+            {% csrf_token %} {{ form.as_p }}
+            <button type="submit" class="w-full bg-teal-600 text-white py-2 px-4 rounded-lg shadow hover:bg-teal-700 mt-5">
+                Proceed to Pay
+            </button>
+        </form>
+
+        {% if order_id %}
+        <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+        <script>
+            const options = {
+                key: "{{ razorpay_key_id }}",
+                amount: "{{ amount|floatformat:2|default:0 }}" * 100,
+                currency: "INR",
+                name: "Your Bank",
+                description: "Deposit Money",
+                order_id: "{{ order_id }}",
+                handler: function(response) {
+                    // Submit payment response to callback
+                    fetch("{% url 'deposit_callback' %}", {
+                        method: "POST",
+                        headers: {
+                            "X-CSRFToken": "{{ csrf_token }}",
+                        },
+                        body: new URLSearchParams({
+                            razorpay_payment_id: response.razorpay_payment_id,
+                            razorpay_order_id: response.razorpay_order_id,
+                            razorpay_signature: response.razorpay_signature,
+                        }),
+                    }).then(() => {
+                        window.location.href = "{% url 'home' %}";
+                    });
+                },
+                theme: {
+                    color: "#4CAF50",
+                },
+            };
+            const rzp1 = new Razorpay(options);
+            rzp1.open();
+        </script>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

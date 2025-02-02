@@ -1,0 +1,165 @@
+<!DOCTYPE html> {% extends 'master_page.html' %} {% load static %} {% block title %}OneStop Bank| Bill Payment {% endblock %}{% block content %}
+
+<div class="bg-gray-100 min-h-screen flex items-center justify-center">
+    <div class="w-full max-w-md bg-white p-6 rounded-lg shadow-lg">
+        <h2 class="text-2xl font-bold text-gray-800 text-center mb-6">Bill Payment</h2>
+
+        <p class="text-gray-600 mb-4">Current Balance: <strong>₹{{ balance }}</strong></p>
+
+        <form id="bill-payment-form" method="POST" class="flex flex-col gap-5">
+            {% csrf_token %}
+
+            <!-- Category Field -->
+            <div>
+                <label for="id_category" class="block text-sm font-medium text-gray-700">Select Category</label> {{ form.category }}
+            </div>
+
+            <!-- Details Field -->
+            <div id="details-container">
+                <label id="details-label" class="block text-sm font-medium text-gray-700">Enter Details</label> {{ form.details }}
+            </div>
+
+            <!-- Amount Field -->
+            <div>
+                <label for="id_amount" class="block text-sm font-medium text-gray-700">Enter Amount</label> {{ form.amount }}
+            </div>
+
+            <!-- Pay Bill Button -->
+            <button type="button" data-modal-target="popup-modal" data-modal-toggle="popup-modal" class="w-full bg-teal-600 text-white py-2 px-4 rounded-lg shadow hover:bg-teal-700 mt-5">
+                Pay Bill
+            </button>
+        </form>
+
+
+
+        <a href="{% url 'home' %}" class="block text-center text-sm text-teal-600 mt-4 hover:underline">
+            Back to Dashboard
+        </a>
+    </div>
+</div>
+<!-- Confirmation Modal -->
+<div id="popup-modal" tabindex="-1" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div class="relative p-4 w-full max-w-md max-h-full">
+        <div class="relative bg-white rounded-lg shadow-sm">
+            <button type="button" class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center" data-modal-hide="popup-modal">
+                <svg
+                    class="w-3 h-3"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 14 14"
+                >
+                    <path
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
+                    />
+                </svg>
+                <span class="sr-only">Close modal</span>
+            </button>
+            <div class="p-4 md:p-5 text-center">
+                <svg class="mx-auto mb-4 text-gray-400 w-12 h-12" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                    <path
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                    />
+                </svg>
+                <h3 class="mb-3 text-lg font-normal text-gray-500">
+                    Are you sure you want to pay the bill for:
+                    <span id="bill-name" class="font-semibold text-gray-800"></span>?
+                </h3>
+                <p class="text-gray-600 mb-5">
+                    Amount: <span id="bill-amount" class="font-semibold text-gray-800"></span>
+                </p>
+                <button id="confirm-payment" data-modal-hide="popup-modal" type="button" class="text-white bg-teal-600 hover:bg-teal-700 focus:ring-4 focus:outline-none focus:ring-teal-300 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">
+                    Yes, proceed
+                </button>
+                <button id="cancel-payment" data-modal-hide="popup-modal" type="button" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100">
+                    No, cancel
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    const categoryField = document.querySelector('#id_category');
+    const detailsContainer = document.getElementById('details-container');
+    const detailsField = document.querySelector('#id_details');
+    const detailsLabel = document.getElementById('details-label');
+
+    // Mapping category to labels and placeholders
+    const categoryLabels = {
+        ELECTRICITY: 'Enter Bill Number',
+        WATER: 'Enter Connection Number',
+        PHONE: 'Enter Phone Number',
+        INTERNET: 'Enter Account Number',
+        GAS: 'Enter Customer ID'
+    };
+
+    categoryField.addEventListener('change', (event) => {
+        const selectedCategory = event.target.value;
+
+        if (categoryLabels[selectedCategory]) {
+            // Update label and placeholder
+            detailsContainer.classList.remove('hidden');
+            detailsLabel.textContent = categoryLabels[selectedCategory];
+            detailsField.placeholder = categoryLabels[selectedCategory];
+            detailsField.required = true;
+        } else {
+            // Hide details field if no category is selected
+            detailsContainer.classList.add('hidden');
+            detailsField.required = false;
+        }
+    });
+
+    // Show/hide details field based on the selected category
+    const amountField = document.getElementById("id_amount");
+    const billNameElement = document.getElementById("bill-name");
+    const billAmountElement = document.getElementById("bill-amount");
+
+    // Update modal content when Pay Bill button is clicked
+    document.querySelector('[data-modal-toggle="popup-modal"]').addEventListener("click", () => {
+        const selectedCategory = categoryField.options[categoryField.selectedIndex].text;
+        const enteredAmount = amountField.value;
+
+        // Update the modal content
+        billNameElement.textContent = selectedCategory || "N/A";
+        billAmountElement.textContent = `₹${enteredAmount || "0.00"}`;
+    });
+
+    // Handle the 'Yes, proceed' button click
+    document.getElementById('confirm-payment').addEventListener("click", () => {
+        // Get form and check if the required fields are filled
+        const form = document.getElementById('bill-payment-form');
+        const selectedCategory = categoryField.options[categoryField.selectedIndex].value;
+        const enteredAmount = amountField.value;
+        const enteredDetails = detailsField.value;
+
+        // Ensure all fields are filled before submitting
+        if (selectedCategory && enteredAmount && (selectedCategory !== "OTHER" && enteredDetails)) {
+
+            // Submit the form
+            form.submit();
+            // Close the modal after form submission
+            document.getElementById("popup-modal").classList.add("hidden");
+        } else {
+            alert("Please complete all fields before proceeding.");
+        }
+    });
+
+    // Handle the 'No, cancel' button click
+    document.getElementById('cancel-payment').addEventListener("click", () => {
+        // Close the modal without proceeding
+        document.getElementById("popup-modal").classList.add("hidden");
+    });
+</script>
+
+
+{% endblock %}

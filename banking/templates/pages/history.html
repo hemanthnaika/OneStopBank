@@ -1,0 +1,49 @@
+<!DOCTYPE html> {% extends 'master_page.html' %} {% load static %} {% block title %}OneStop Bank | Transaction History{% endblock %} {% block content %}
+<div class="p-4 sm:ml-64">
+    <div class="bg-gray-100 min-h-screen mt-14 py-8">
+        <div class="container mx-auto px-4">
+
+            <!-- Page Header -->
+            <div class="flex items-center justify-between mb-6">
+                <h1 class="text-3xl font-bold font-heading">Transaction History</h1>
+            </div>
+
+            <!-- Transactions Table -->
+            <div class="bg-white shadow-lg rounded-lg overflow-x-auto">
+                <table class="table-auto w-full text-left min-w-full">
+                    <thead class="bg-blue-800 text-white">
+                        <tr>
+                            <th class="px-6 py-4">Date</th>
+                            <th class="px-6 py-4">Description</th>
+                            <th class="px-6 py-4">Amount</th>
+                            <th class="px-6 py-4">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-700">
+                        {% for transaction in transactions %}
+                        <tr class="border-b hover:bg-gray-100">
+                            <td class="px-6 py-4">{{ transaction.created_at }}</td>
+                            <td class="px-6 py-4">{{ transaction.description }}</td>
+                            <td class="px-6 py-4 font-bold 
+                                    {% if transaction.type == 'DEBIT' %}text-red-500{% else %}text-green-500{% endif %}">
+                                ₹ {{ transaction.amount|floatformat:2 }}
+                            </td>
+                            <td class="px-6 py-4">
+                                {% if transaction.status == "SUCCESS" %}
+                                <span class="bg-green-100 text-green-600 text-sm px-3 py-1 rounded-lg">Successful</span> {% elif transaction.status == "PENDING" %}
+                                <span class="bg-yellow-100 text-yellow-600 text-sm px-3 py-1 rounded-lg">Pending</span> {% else %}
+                                <span class="bg-red-100 text-red-600 text-sm px-3 py-1 rounded-lg">Failed</span> {% endif %}
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="4" class="px-6 py-4 text-center text-gray-500">No transactions found.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

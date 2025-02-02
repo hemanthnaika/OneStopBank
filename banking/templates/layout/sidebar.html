@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<aside id="logo-sidebar" class="fixed top-0 h-screen left-0 z-40 w-64  pt-20 transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0 " aria-label="Sidebar">
+    <div class="h-full px-3 pb-4 overflow-y-auto bg-white">
+        <ul class="space-y-2 font-medium">
+            <li>
+                <a href="{% url 'home' %}" class="flex items-center p-2 text-gray-900 rounded-lg  hover:bg-gray-100 group">
+                    🏠
+                    <span class="ms-3"> Dashboard</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'deposit' %}" class="flex items-center p-2 text-gray-900 rounded-lg  hover:bg-gray-100">
+                    💵
+                    <span class="flex-1 ms-3 whitespace-nowrap"> Deposit</span>
+
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'history' %}" class="flex items-center p-2 text-gray-900 rounded-lg  hover:bg-gray-100">📝 <span class="flex-1 ms-3 whitespace-nowrap">Transaction History</span></a>
+            </li>
+            <li>
+                <a href="{% url 'transfer' %}" class="flex items-center p-2 text-gray-900 rounded-lg  hover:bg-gray-100 700 group">
+                    💳
+                    <span class="flex-1 ms-3 whitespace-nowrap">Transfer</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'bill' %}" class="flex items-center p-2 text-gray-900 rounded-lg  hover:bg-gray-100 700 group">
+                    💡  
+                    <span class="flex-1 ms-3 whitespace-nowrap">Bill Payments</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'customer_support' %}" class="flex items-center p-2 text-gray-900 rounded-lg  hover:bg-gray-100 700 group">
+                    📞 
+                    <span class="flex-1 ms-3 whitespace-nowrap">Customer Support</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'profile' %}" class="flex items-center p-2 text-gray-900 rounded-lg  hover:bg-gray-100 700 group">
+                    ⚙️ 
+                    <span class="flex-1 ms-3 whitespace-nowrap">Profile Settings</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'logout' %}" class="flex items-center p-2 text-gray-900 rounded-lg  hover:bg-gray-100 700 group">
+                    🚪 
+                    <span class="flex-1 ms-3 whitespace-nowrap"> Logout</span>
+                </a>
+            </li>
+
+        </ul>
+        <div class="absolute bottom-0 w-full p-4 text-center text-gray-500">
+            <small>&copy; 2025 OneStop Bank</small>
+        </div>
+    </div>
+
+
+</aside>

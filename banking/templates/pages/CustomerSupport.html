@@ -1,0 +1,31 @@
+<!DOCTYPE html> {% extends 'master_page.html' %} {% load static %} {% block title %} OneStop Bank | Update Profile {% endblock %} {% block content %}
+<!-- Customer Support Page -->
+<div class="min-h-screen bg-gray-100 flex items-center justify-center p-4 mt-14">
+    <div class="w-full max-w-3xl bg-white p-8 rounded-lg shadow-lg">
+        <h2 class="text-3xl font-semibold text-center text-gray-800 mb-8">Customer Support</h2>
+
+        <p class="text-lg text-center text-gray-600 mb-6">Have a question or issue? We're here to help! Please fill out the form below and our support team will get back to you as soon as possible.</p>
+
+        <form method="POST" class="flex flex-col gap-5">
+            {% csrf_token %} {{ form.as_p }}
+
+
+
+
+            <div class="flex justify-center">
+                <button type="submit" class="px-6 py-3 bg-blue-600 text-white text-lg font-medium rounded-lg w-full hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    Submit Inquiry
+                </button>
+            </div>
+        </form>
+
+        <div class="mt-8 text-center">
+            <p class="text-gray-600">Or reach us at:</p>
+            <div class="flex justify-center space-x-6 mt-4">
+                <a href="tel:+1234567890" class="text-blue-600 hover:underline">+1 234 567 890</a>
+                <a href="mailto:support@bankapp.com" class="text-blue-600 hover:underline">support@bankapp.com</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

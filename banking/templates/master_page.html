@@ -1,0 +1,37 @@
+<!DOCTYPE html> {% load static tailwind_tags %}
+<html lang="en">
+
+<head>
+    <title>{% block title %}{% endblock %}</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"> {% tailwind_css %}
+    <link rel="icon" href="{% static 'img/favicon.ico' %}" type="image/x-icon" />
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@3.0.0/dist/flowbite.min.js"></script>
+</head>
+
+<body class="bg-gray-50 font-serif leading-normal tracking-normal">
+    {% if messages %}
+    <div id="msg-box" class="fixed top-4 right-4 z-50 space-y-2">
+        {% for message in messages %}
+        <div class="message px-4 py-3 rounded-lg shadow-lg {{ message.tags }}">
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %} {% include 'layout/navbar.html' %} {% include 'layout/sidebar.html' %} {% block content %} {% endblock %}
+
+    <script>
+        // Auto-hide messages after 3 seconds
+        setTimeout(() => {
+            let messages = document.querySelectorAll('.message');
+            messages.forEach((msg) => {
+                msg.style.transition = "opacity 0.5s";
+                msg.style.opacity = "0";
+                setTimeout(() => msg.remove(), 500); // Remove after fade-out
+            });
+        }, 3000); // Time in milliseconds
+    </script>
+</body>
+
+</html>

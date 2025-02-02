@@ -1,0 +1,41 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Django secret key and settings
+.env
+*.env
+
+# Virtual environment
+venv/
+env/
+*.log
+
+# Database files
+*.sqlite3
+*.db
+
+# Static and media files (if using collectstatic)
+staticfiles/
+media/
+
+# IDE and editor settings
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Node.js dependencies (if using Tailwind or React)
+node_modules/
+package-lock.json
+yarn.lock
+
+# Docker
+*.dockerfile
+docker-compose.yml
+
+# Cache files
+*.cache
+*.mo
+*.pot

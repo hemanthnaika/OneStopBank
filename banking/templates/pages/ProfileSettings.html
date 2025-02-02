@@ -1,0 +1,33 @@
+<!DOCTYPE html> {% extends 'master_page.html' %} {% load static %} {% block title %}OneStop Bank | Update Profile{% endblock %} {% block content %}
+<div class="min-h-screen bg-gray-100 flex items-center justify-center p-4 mt-14">
+    <div class="w-full max-w-3xl bg-white p-8 rounded-lg shadow-lg">
+        <h2 class="text-3xl font-semibold text-center text-gray-800 mb-8">Update Profile</h2>
+
+        <form method="POST" enctype="multipart/form-data" class="grid grid-cols-2 gap-4">
+            {% csrf_token %}
+
+
+
+            <!-- Form Fields -->
+            {{ form.as_p }} {% if user.user_profile %}
+            <img id="imagePreview" src="{{ user.user_profile.url }}" class="w-14 h-14 rounded-full border-2 border-gray-300 shadow-md"> {% else %}No Image{% endif %}
+
+            <!-- Submit Button -->
+            <div class="flex justify-center mt-4 col-span-2">
+                <button type="submit" class="px-6 py-3 bg-blue-600 text-white text-lg font-medium rounded-lg w-full hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    Update Profile
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- JavaScript for Image Preview -->
+<script>
+    function previewImage(event) {
+        var image = document.getElementById('imagePreview');
+        image.src = URL.createObjectURL(event.target.files[0]);
+    }
+</script>
+
+{% endblock %}
