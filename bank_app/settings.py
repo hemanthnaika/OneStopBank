@@ -172,3 +172,4 @@ STATIC_URL = '/static/'
 
 # Directory where collected static files will be stored
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATIC_URL = '/static/'  # Correctly set this path
