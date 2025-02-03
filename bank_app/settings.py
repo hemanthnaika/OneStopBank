@@ -24,8 +24,8 @@ SECRET_KEY = 'django-insecure-a436dqv7i)oxrzw_md9c3pf%l7vlqnha5$&(*d44j6l0ttgw=o
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='127.0.0.1').split(',')
 
-ALLOWED_HOSTS = ['onestopbank.pythonanywhere.com']
 
 
 # Application definition
@@ -143,9 +143,7 @@ AUTHENTICATION_BACKENDS = [
 LOGIN_URL = '/login/'
 
 
-# Static Files
-STATIC_URL = '/static/'
-STATICFILES_DIRS = [BASE_DIR / 'static']  # Global static directory
+
 
 
 
@@ -156,10 +154,20 @@ RAZORPAY_KEY_SECRET = config('RAZORPAY_KEY_SECRET')
 
 # Messages settings
 from django.contrib.messages import constants as messages
+
 MESSAGE_TAGS = {
-    messages.DEBUG: 'bg-gray-500 text-white',
-    messages.INFO: 'bg-blue-500 text-white',
-    messages.SUCCESS: 'bg-green-500 text-white',
-    messages.WARNING: 'bg-yellow-500 text-black',
-    messages.ERROR: 'bg-red-500 text-white',
+    messages.DEBUG: "bg-gray-100 text-gray-800 border border-gray-300",
+    messages.INFO: "bg-blue-100 text-blue-800 border border-blue-300",
+    messages.SUCCESS: "bg-green-100 text-green-800 border border-green-300",
+    messages.WARNING: "bg-yellow-100 text-yellow-800 border border-yellow-300",
+    messages.ERROR: "bg-red-100 text-red-800 border border-red-300",
 }
+# Static Files
+STATICFILES_DIRS = [BASE_DIR / 'static']  # Global static directory
+STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+# Ensure Django finds the Tailwind CSS file inside the theme app
+STATICFILES_DIRS = [
+    BASE_DIR / 'theme/static',  # Add the static directory of your Tailwind app
+]
