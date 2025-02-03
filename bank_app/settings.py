@@ -162,12 +162,13 @@ MESSAGE_TAGS = {
     messages.WARNING: "bg-yellow-100 text-yellow-800 border border-yellow-300",
     messages.ERROR: "bg-red-100 text-red-800 border border-red-300",
 }
-# Static Files
-STATICFILES_DIRS = [BASE_DIR / 'static']  # Global static directory
-STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles'
-
-# Ensure Django finds the Tailwind CSS file inside the theme app
+# Static files configuration
 STATICFILES_DIRS = [
-    BASE_DIR / 'theme/static',  # Add the static directory of your Tailwind app
+    BASE_DIR / 'static',            # Global static directory
+    BASE_DIR / 'theme/static',      # Tailwind static directory
 ]
+
+STATIC_URL = '/static/'
+
+# Directory where collected static files will be stored
+STATIC_ROOT = BASE_DIR / 'staticfiles'
