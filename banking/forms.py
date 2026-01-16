@@ -29,7 +29,7 @@ class RegistrationForm(UserCreationForm):
             'first_name',
             'last_name',
             'email', 
-            'account_number', 
+  
             'account_type', 
             'phone_number', 
             'address', 
@@ -50,10 +50,7 @@ class RegistrationForm(UserCreationForm):
                 'class': 'block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-teal-500 focus:border-teal-500 sm:text-sm',
                 'placeholder': 'Enter your email',
             }),
-            'account_number': forms.TextInput(attrs={
-                'class': 'block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-teal-500 focus:border-teal-500 sm:text-sm',
-                'placeholder': 'Enter your account number',
-            }),
+         
             'account_type': forms.Select(attrs={
                 'class': 'block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-teal-500 focus:border-teal-500 sm:text-sm',
             }),
@@ -76,7 +73,7 @@ class RegistrationForm(UserCreationForm):
         labels = {
             'first_name': mark_safe("First Name <span style='color: red;'>*</span>"),
             'email': mark_safe("Email <span style='color: red;'>*</span>"),
-            'account_number': mark_safe("Account Number <span style='color: red;'>*</span>"),
+        
             'account_type': mark_safe("Account Type <span style='color: red;'>*</span>"),
             'phone_number': mark_safe("Phone Number <span style='color: red;'>*</span>"),
             'date_of_birth': mark_safe("Date of Birth <span style='color: red;'>*</span>"),

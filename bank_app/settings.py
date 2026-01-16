@@ -81,13 +81,24 @@ WSGI_APPLICATION = 'bank_app.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'Bank',
+        'USER':'postgres',
+        'PASSWORD':'123',
+        'PORT':'5432',
+        'HOST':'localhost',
+
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -161,6 +172,7 @@ MESSAGE_TAGS = {
     messages.SUCCESS: "bg-green-100 text-green-800 border border-green-300",
     messages.WARNING: "bg-yellow-100 text-yellow-800 border border-yellow-300",
     messages.ERROR: "bg-red-100 text-red-800 border border-red-300",
+    
 }
 # Static files configuration
 STATICFILES_DIRS = [

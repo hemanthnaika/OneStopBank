@@ -23,7 +23,6 @@ class UserAccountManager(BaseUserManager):
             raise ValueError("Superuser must have is_superuser=True.")
 
         return self.create_user(email, password, **extra_fields)
-
 class UserAccount(AbstractUser):
     ACCOUNT_TYPES = [
         ('SAVINGS', 'Savings Account'),
@@ -31,12 +30,12 @@ class UserAccount(AbstractUser):
         ('FIXED', 'Fixed Deposit'),
     ]
 
-    email = models.EmailField(unique=True)  # Use email as the username field
-    account_number = models.CharField(max_length=12, unique=True)
+    email = models.EmailField(unique=True)
+    account_number = models.CharField(max_length=12, unique=True, editable=False, blank=True)
     account_type = models.CharField(max_length=20, choices=ACCOUNT_TYPES, default='SAVINGS')
     balance = models.DecimalField(max_digits=15, decimal_places=2, default=0.00)
     phone_number = models.CharField(
-        max_length=15, 
+        max_length=15,
         unique=True,
         validators=[
             RegexValidator(
@@ -50,13 +49,27 @@ class UserAccount(AbstractUser):
     account_created_at = models.DateTimeField(auto_now_add=True)
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30, blank=True, null=True)
-    user_profile=models.ImageField(upload_to='profile_pics/', null=True)
+    user_profile = models.ImageField(upload_to='profile_pics/', null=True)
+    
 
-    username = None  # Remove the username field
-    USERNAME_FIELD = 'email'  # Set email as the unique identifier
-    REQUIRED_FIELDS = ['account_number', 'phone_number']
+    username = None
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['phone_number'] 
 
     objects = UserAccountManager()
+
+    def save(self, *args, **kwargs):
+        if not self.account_number:
+            self.account_number = self.generate_unique_account_number()
+        super().save(*args, **kwargs)
+
+    def generate_unique_account_number(self):
+        # Generate a unique 12-digit number
+        from random import randint
+        while True:
+            number = str(randint(100000000000, 999999999999))  
+            if not UserAccount.objects.filter(account_number=number).exists():
+                return number
 
     def __str__(self):
         return f"{self.email} - {self.account_number}"
