@@ -46,6 +46,7 @@ AUTH_USER_MODEL = 'banking.UserAccount'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    "whitenoise.middleware.WhiteNoiseMiddleware", 
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -191,3 +192,5 @@ STATIC_URL = '/static/'
 # Directory where collected static files will be stored
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATIC_URL = '/static/'  # Correctly set this path
+
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
